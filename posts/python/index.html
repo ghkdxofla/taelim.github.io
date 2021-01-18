@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.2"><meta name="generator" content="Jekyll v4.2.0" /><meta property="og:title" content="Python" /><meta name="author" content="Taelim Hwang" /><meta property="og:locale" content="en_US" /><meta name="description" content="파일 크기 확인하는 법 ```python Simple way import os b = os.path.getsize(“/path/aaa.txt”)" /><meta property="og:description" content="파일 크기 확인하는 법 ```python Simple way import os b = os.path.getsize(“/path/aaa.txt”)" /><link rel="canonical" href="https://ghkdxofla.github.io/posts/python/" /><meta property="og:url" content="https://ghkdxofla.github.io/posts/python/" /><meta property="og:site_name" content="Taelim’s blog" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-02-19T00:00:00+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Python" /><meta name="twitter:site" content="@ghkdxofla" /><meta name="twitter:creator" content="@Taelim Hwang" /><meta name="google-site-verification" content="taelim" /> <script type="application/ld+json"> {"description":"파일 크기 확인하는 법 ```python Simple way import os b = os.path.getsize(“/path/aaa.txt”)","url":"https://ghkdxofla.github.io/posts/python/","@type":"BlogPosting","headline":"Python","dateModified":"2021-01-11T10:23:25+09:00","datePublished":"2020-02-19T00:00:00+09:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ghkdxofla.github.io/posts/python/"},"author":{"@type":"Person","name":"Taelim Hwang"},"@context":"https://schema.org"}</script><title>Python | Taelim's blog</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id="></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="http://www.gravatar.com/avatar/71f7d3fe60f25347506c60bc7f631e7d?s=150" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Taelim's blog</a></div><div class="site-subtitle font-italic">Normal life</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/ghkdxofla" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/ghkdxofla" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['ghkdxofla','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Python</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Python</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Wed, Feb 19, 2020, 12:00 AM +0900" > Feb 19, 2020 <i class="unloaded">2020-02-19T00:00:00+09:00</i> </span> by <span class="author"> Taelim Hwang </span></div><div> <span> Updated <span class="timeago lastmod" data-toggle="tooltip" data-placement="bottom" title="Mon, Jan 11, 2021, 10:23 AM +0900" > Jan 11 <i class="unloaded">2021-01-11T10:23:25+09:00</i> </span> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1081 words">6 min</span></div></div><div class="post-content"><h3 id="파일-크기-확인하는-법">파일 크기 확인하는 법</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre><span class="c1">### Simple way
+</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">getsize</span><span class="p">(</span><span class="s">"/path/aaa.txt"</span><span class="p">)</span>
+
+<span class="c1">### Another way 1
+</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">statinfo</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">stat</span><span class="p">(</span><span class="s">"somefile.txt"</span><span class="p">)</span>
+<span class="n">statinfo</span><span class="p">.</span><span class="n">st_size</span>
+
+<span class="c1">### Another way 2
+</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"somefile.txt"</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="n">SEEK_END</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="c1">### Abstract Class
+</span>
+<span class="n">필요</span> <span class="n">Module을</span> <span class="n">Import</span>
+<span class="sb">``</span><span class="err">`</span><span class="n">python</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+
+<span class="c1">### 사용성을 위해 다음의 코드가 추천됨
+</span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABCMeta</span>
+</pre></table></code></div></div><p>Abstract Class 구현</p><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">AbstractClassExample</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+ 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+    
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></table></code></div></div><p>구현된 Abstract Class 사용</p><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ClassExample</span><span class="p">(</span><span class="n">AbstractClassExample</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+
+    <span class="c1">### Abstract Method를 구현하지 않으면 Error 발생
+</span>    <span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"something"</span><span class="p">)</span>
+
+    <span class="c1">### Method Overloading 개념도 가능
+</span>    <span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="정적-타입">정적 타입</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">typing_example</span><span class="p">(</span><span class="n">param_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">param_2</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s">"default"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">"example"</span>
+</pre></table></code></div></div><h3 id="string-formatting">String Formatting</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="c1">#### 전체 자리수=8, 소수점은 2자리까지 반올림
+</span><span class="k">print</span><span class="p">(</span><span class="s">"num: {:8.2f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+<span class="c1">#### 왼쪽 정렬 및 빈 공간 0으로 채우기 
+</span><span class="k">print</span><span class="p">(</span><span class="s">"num: {:0&lt;8.2f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+<span class="c1">#### 오른쪽 정렬 및 빈 공간 0으로 채우기 
+</span><span class="k">print</span><span class="p">(</span><span class="s">"num: {:0&gt;8.2f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+<span class="c1">#### 오른쪽 정렬 및 빈 공간 *로 채우기 
+</span><span class="k">print</span><span class="p">(</span><span class="s">"num: {:*&gt;8.2f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"="</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="s">"Taelim Hwang"</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{:|&gt;30s}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{:|&lt;30s}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+</pre></table></code></div></div><h3 id="hash-사용하기">Hash 사용하기</h3><p>내장함수 hash의 경우, 3.4 버전 이상부터 Process에 따라 다른 Hash Value가 return 되므로 사용 지양</p><div class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>python <span class="nt">-c</span> <span class="s2">"print(hash('123'))"</span>
+8180009514858937698
+python <span class="nt">-c</span> <span class="s2">"print(hash('123'))"</span>
+<span class="nt">-3358196339336188655</span>
+python <span class="nt">-c</span> <span class="s2">"print(hash('123'))"</span>
+<span class="nt">-5852881486981464238</span>
+</pre></table></code></div></div><p>hashlib 사용</p><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="c1">### sha256, sha1, md5 등 hash algorithm 선택
+### input value는 encode()를 통해 unicode로 변환되어야 한다
+### hexdigest()로 16진수의 hex값으로 hash value 출력
+</span><span class="n">hsahlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">input_value</span><span class="p">.</span><span class="n">encode</span><span class="p">()).</span><span class="n">hexdigest</span><span class="p">()</span>
+</pre></table></code></div></div><h3 id="string-split-시-뒤의-1개만-분리하고-싶을-경우">String split 시, 뒤의 1개만 분리하고 싶을 경우</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="s">"a b c,d,e,f"</span><span class="p">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">### Return value
+</span><span class="p">[</span><span class="s">'a b c,d,e'</span><span class="p">,</span> <span class="s">'f'</span><span class="p">]</span>
+</pre></table></code></div></div><h3 id="function을-argument로-전달하면서-해당-function의-argument-또한-넘기고-싶을-경우">Function을 argument로 전달하면서 해당 function의 argument 또한 넘기고 싶을 경우</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">other</span>
+
+<span class="n">b</span><span class="p">(</span><span class="s">'world'</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="s">'hello'</span><span class="p">,</span> <span class="s">'dude'</span><span class="p">)</span>
+
+<span class="c1">### Return value : 
+</span><span class="n">hello</span> <span class="n">dude</span>
+<span class="n">world</span>
+</pre></table></code></div></div><h3 id="time-check하는-decorator-짜기">Time check하는 decorator 짜기</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="c1">### 정의
+</span><span class="k">def</span> <span class="nf">check_time</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">logger</span><span class="p">.</span><span class="n">set_log</span><span class="p">(</span><span class="s">'DEBUG'</span><span class="p">,</span> <span class="s">"Time elapsed {check_time}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">check_time</span><span class="o">=</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">),</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">'classAndFunc'</span><span class="p">:</span> <span class="n">function</span><span class="p">.</span><span class="n">__qualname__</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">wrapper_func</span>
+
+<span class="c1">### 사용법 1 : With decorator
+</span><span class="o">@</span><span class="n">check_time</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+    <span class="n">mssql_conn</span> <span class="o">=</span> <span class="n">MSSQLConnector</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s">'qv25'</span><span class="p">)</span>
+    <span class="n">mssql_conn</span><span class="p">.</span><span class="n">get_data_query</span><span class="p">(</span><span class="s">"SELECT * FROM displays_history"</span><span class="p">)</span>
+
+<span class="n">func</span><span class="p">()</span>
+
+<span class="c1">### 사용법 2 : 정의된 함수를 측정하고 싶을 경우
+</span><span class="n">check_time</span><span class="p">(</span><span class="n">func</span><span class="p">())</span>
+</pre></table></code></div></div><h3 id="class-및-function-name-확인하기">Class 및 Function name 확인하기</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">my_function</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>         <span class="c1">### gives "my_function"
+</span><span class="k">print</span><span class="p">(</span><span class="n">MyClass</span><span class="p">.</span><span class="n">method</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>      <span class="c1">### gives "method"
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">my_function</span><span class="p">.</span><span class="n">__qualname__</span><span class="p">)</span>     <span class="c1">### gives "my_function"
+</span><span class="k">print</span><span class="p">(</span><span class="n">MyClass</span><span class="p">.</span><span class="n">method</span><span class="p">.</span><span class="n">__qualname__</span><span class="p">)</span>  <span class="c1">### gives "MyClass.method"
+</span></pre></table></code></div></div><h3 id="logging">Logging</h3><p>기본 사용법</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>내용 추가
+</pre></table></code></div></div><p>추가로 표시하고 싶은 값이 있을 경우</p><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="n">FORMAT</span> <span class="o">=</span> <span class="s">'%(asctime)-15s %(clientip)s %(user)-8s %(message)s'</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">'clientip'</span><span class="p">:</span> <span class="s">'192.168.0.1'</span><span class="p">,</span> <span class="s">'user'</span><span class="p">:</span> <span class="s">'fbloggs'</span><span class="p">}</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">'tcpserver'</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="s">'Protocol problem: %s'</span><span class="p">,</span> <span class="s">'connection reset'</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="coroutineasyncio">Coroutine(asyncio)</h3><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>https://iscinumpy.gitlab.io/post/a-simple-introduction-to-asyncio/
+</pre></table></code></div></div><h3 id="integer-to-string-시-앞부분-0으로-채우기">Integer to String 시 앞부분 0으로 채우기</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">### '01'
+</span></pre></table></code></div></div><h3 id="프로젝트의-구조">프로젝트의 구조</h3><p>내용 추가 필요</p><h3 id="파이썬이-느린-이유">파이썬이 느린 이유</h3><p>http://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/</p><h3 id="list1에-있는-요소가-다른-list2에-있는지-확인하기">list1에 있는 요소가 다른 list2에 있는지 확인하기</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre><td class="rouge-code"><pre><span class="c1">### List of string 
+</span><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Hi'</span> <span class="p">,</span>  <span class="s">'hello'</span><span class="p">,</span> <span class="s">'at'</span><span class="p">,</span> <span class="s">'this'</span><span class="p">,</span> <span class="s">'there'</span><span class="p">,</span> <span class="s">'from'</span><span class="p">]</span>
+ 
+<span class="c1">### List of string
+</span><span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="s">'there'</span> <span class="p">,</span> <span class="s">'hello'</span><span class="p">,</span> <span class="s">'Hi'</span><span class="p">]</span>
+
+<span class="c1">### check if list1 contains all elements in list2
+</span><span class="n">result</span> <span class="o">=</span>  <span class="nb">all</span><span class="p">(</span><span class="n">elem</span> <span class="ow">in</span> <span class="n">list1</span>  <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">list2</span><span class="p">)</span>
+ 
+<span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Yes, list1 contains all elements in list2"</span><span class="p">)</span>    
+<span class="k">else</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"No, list1 does not contains all elements in list2"</span>
+
+<span class="c1">### check if list1 contains any elements of list2
+</span><span class="n">result</span> <span class="o">=</span>  <span class="nb">any</span><span class="p">(</span><span class="n">elem</span> <span class="ow">in</span> <span class="n">list1</span>  <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">list2</span><span class="p">)</span>
+ 
+<span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Yes, list1 contains any elements of list2"</span><span class="p">)</span>    
+<span class="k">else</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"No, list1 contains any elements of list2"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="traceback-사용을-통한-exception-handling">Traceback 사용을 통한 exception handling</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">traceback</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">blah</span><span class="o">&gt;</span>
+<span class="k">except</span> <span class="nb">IndexError</span><span class="p">:</span>
+    <span class="n">traceback</span><span class="p">.</span><span class="n">print_exc</span><span class="p">()</span>
+</pre></table></code></div></div><h3 id="super-class-변수-참조">Super class 변수 참조</h3><div class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">PostgreSQLConnector</span><span class="p">(</span><span class="n">MSSQLConnector</span><span class="p">):</span>
+    <span class="c1">### MSSQLConnector 클래스 상속 후 사용한다
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_config_dir</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s">"configuration/postgresql_config.json"</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s">"kr"</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">db_config_dir</span><span class="o">=</span><span class="n">db_config_dir</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s">'{PostgreSQL Unicode}'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">conn_obj</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InitConnectorError</span><span class="p">(</span><span class="n">PostgreSQLConnector</span><span class="p">)</span>
+
+<span class="c1">### 위의 예제에서 conn_obj attribute는 Super class에서 생성 시 할당되는 부분이다
+### 이를 하위 child class에서 사용하려면 super().conn_obj 가 아니라
+### self.conn_obj로 참조하면 된다
+</span></pre></table></code></div></div><h3 id="package-만드는-법">Package 만드는 법</h3><p>내용 추가</p><h3 id="참조-링크">참조 링크</h3><p><a href="https://bluese05.tistory.com/61">Python ABC(Abstract Base Class)</a></p><p><a href="https://www.python-course.eu/python3_abstract_classes.php">Abstract Classes</a></p><p><a href="http://blog.naver.com/passion053/221070020739">정적 타입 선언</a></p><p><a href="https://frhyme.github.io/python-basic/python_string_format/">Python 출력 시 formatting</a></p><p><a href="https://www.holaxprogramming.com/2017/06/28/python-project-structures/">파이썬 프로젝트의 구조</a></p><p><a href="https://charsyam.wordpress.com/2018/01/29/%EC%9E%85-%EA%B0%9C%EB%B0%9C-python-3-3-%EB%B6%80%ED%84%B0%EB%8A%94-hash-%EA%B2%B0%EA%B3%BC%EA%B0%80-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EB%A7%88%EB%8B%A4-%EB%8B%AC%EB%9D%BC%EC%9A%94/">프로세스에 따른 hash 결과가 다르다</a></p><p><a href="https://docs.python.org/ko/3/library/logging.html">Logging</a></p><p><a href="https://stackoverflow.com/questions/251464/how-to-get-a-function-name-as-a-string">Get class and function name</a></p><p><a href="https://iscinumpy.gitlab.io/post/a-simple-introduction-to-asyncio/">Asyncio</a></p><p><a href="https://thispointer.com/python-check-if-a-list-contains-all-the-elements-of-another-list/">list a에 있는 요소가 다른 list b에 있는지 확인하기</a></p><p><a href="https://stackoverflow.com/questions/6075758/python-super-object-has-no-attribute-attribute-name">Super class attribute 참조</a></p><p><a href="https://stackoverflow.com/questions/15301999/default-arguments-with-args-and-kwargs">Default arguments with *args and **kwargs</a></p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/programming-language/'>Programming Language</a>, <a href='/categories/python/'>Python</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/programming-language/" class="post-tag no-text-decoration" >Programming Language</a> <a href="/tags/python/" class="post-tag no-text-decoration" >Python</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Python - Taelim's blog&url=https://ghkdxofla.github.io/posts/python/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Python - Taelim's blog&u=https://ghkdxofla.github.io/posts/python/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Python - Taelim's blog&url=https://ghkdxofla.github.io/posts/python/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/nginx(0)/">Nginx, 정확히 무엇인가? (0)</a><li><a href="/posts/mongodb(1)/">MongoDB 설치 및 사용법</a><li><a href="/posts/jupyter_notebook/">Jupyter notebook 설치 및 사용법</a><li><a href="/posts/sqlalchemy-raw-query/">SQLAlchemy에서 실제 생성된 Query가 보고 싶을 경우</a><li><a href="/posts/multi-container-design-pattern/">Multi container design pattern</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/%EA%B0%9C%EB%B0%9C/">개발</a> <a class="post-tag" href="/tags/python/">Python</a> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">환경 구축</a> <a class="post-tag" href="/tags/network/">Network</a> <a class="post-tag" href="/tags/data-analysis/">Data Analysis</a> <a class="post-tag" href="/tags/data-science/">Data Science</a> <a class="post-tag" href="/tags/programming-language/">Programming Language</a> <a class="post-tag" href="/tags/server/">Server</a> <a class="post-tag" href="/tags/rdbms/">RDBMS</a></div></div></div><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/sqlalchemy-raw-query/"><div class="card-body"> <span class="timeago small" > Jul 14, 2020 <i class="unloaded">2020-07-14T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>SQLAlchemy에서 실제 생성된 Query가 보고 싶을 경우</h3><div class="text-muted small"><p> 1 2 3 4 5 6 7 8 9 from sqlalchemy.sql import table, column, select t = table('t', column('x')) s = select([t]).where(t.c.x == 5) # compile_kwargs에 해당 parameter를 넘겨주지 않을 경우, 일부 변수에 대해 치환되지 않은 Que...</p></div></div></a></div><div class="card"> <a href="/posts/apscheduler/"><div class="card-body"> <span class="timeago small" > Jul 21, 2020 <i class="unloaded">2020-07-21T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Apscheduler(Python 스케쥴링 라이브러리)</h3><div class="text-muted small"><p> Apscheduler Apscheduler란? Python code에 대한 Scheduling을 구성해주는 library Template code 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 4...</p></div></div></a></div><div class="card"> <a href="/posts/lint/"><div class="card-body"> <span class="timeago small" > May 6, 2020 <i class="unloaded">2020-05-06T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Python에서 사용할만한 code refactoring library등</h3><div class="text-muted small"><p> 참조 링크 Pylint</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/bokeh/" class="btn btn-outline-primary"><p>Bokeh 사용법</p></a> <a href="/posts/jupyter_notebook/" class="btn btn-outline-primary"><p>Jupyter notebook 설치 및 사용법</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://twitter.com/ghkdxofla">Taelim Hwang</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/%EA%B0%9C%EB%B0%9C/">개발</a> <a class="post-tag" href="/tags/python/">Python</a> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">환경 구축</a> <a class="post-tag" href="/tags/network/">Network</a> <a class="post-tag" href="/tags/data-analysis/">Data Analysis</a> <a class="post-tag" href="/tags/data-science/">Data Science</a> <a class="post-tag" href="/tags/programming-language/">Programming Language</a> <a class="post-tag" href="/tags/server/">Server</a> <a class="post-tag" href="/tags/rdbms/">RDBMS</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://ghkdxofla.github.io{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>

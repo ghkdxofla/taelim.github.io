@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.2"><meta name="generator" content="Jekyll v4.2.0" /><meta property="og:title" content="SQL Server" /><meta name="author" content="Taelim Hwang" /><meta property="og:locale" content="en_US" /><meta name="description" content="Row Number를 매기는 방법 1 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY idx) rownum, * FROM page_table ) page_table WHERE rownum BETWEEN 1 AND 20" /><meta property="og:description" content="Row Number를 매기는 방법 1 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY idx) rownum, * FROM page_table ) page_table WHERE rownum BETWEEN 1 AND 20" /><link rel="canonical" href="https://ghkdxofla.github.io/posts/mssql/" /><meta property="og:url" content="https://ghkdxofla.github.io/posts/mssql/" /><meta property="og:site_name" content="Taelim’s blog" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-04-19T00:00:00+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="SQL Server" /><meta name="twitter:site" content="@ghkdxofla" /><meta name="twitter:creator" content="@Taelim Hwang" /><meta name="google-site-verification" content="taelim" /> <script type="application/ld+json"> {"description":"Row Number를 매기는 방법 1 SELECT * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY idx) rownum, * FROM page_table ) page_table WHERE rownum BETWEEN 1 AND 20","url":"https://ghkdxofla.github.io/posts/mssql/","@type":"BlogPosting","headline":"SQL Server","dateModified":"2021-01-11T10:23:25+09:00","datePublished":"2020-04-19T00:00:00+09:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ghkdxofla.github.io/posts/mssql/"},"author":{"@type":"Person","name":"Taelim Hwang"},"@context":"https://schema.org"}</script><title>SQL Server | Taelim's blog</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id="></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="http://www.gravatar.com/avatar/71f7d3fe60f25347506c60bc7f631e7d?s=150" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Taelim's blog</a></div><div class="site-subtitle font-italic">Normal life</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/ghkdxofla" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/ghkdxofla" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['ghkdxofla','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>SQL Server</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>SQL Server</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Sun, Apr 19, 2020, 12:00 AM +0900" > Apr 19, 2020 <i class="unloaded">2020-04-19T00:00:00+09:00</i> </span> by <span class="author"> Taelim Hwang </span></div><div> <span> Updated <span class="timeago lastmod" data-toggle="tooltip" data-placement="bottom" title="Mon, Jan 11, 2021, 10:23 AM +0900" > Jan 11 <i class="unloaded">2021-01-11T10:23:25+09:00</i> </span> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1298 words">7 min</span></div></div><div class="post-content"><h3 id="row-number를-매기는-방법">Row Number를 매기는 방법</h3><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="p">(</span> <span class="k">SELECT</span> <span class="n">ROW_NUMBER</span><span class="p">()</span> <span class="n">OVER</span><span class="p">(</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">idx</span><span class="p">)</span> <span class="n">rownum</span><span class="p">,</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">page_table</span> <span class="p">)</span> <span class="n">page_table</span> <span class="k">WHERE</span> <span class="n">rownum</span> <span class="k">BETWEEN</span> <span class="mi">1</span> <span class="k">AND</span> <span class="mi">20</span>
+</pre></table></code></div></div><h3 id="문자열의-시작-위치-찾기">문자열의 시작 위치 찾기</h3><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre><span class="k">SELECT</span> <span class="n">CHARINDEX</span><span class="p">(</span><span class="s1">'찾을문자열A'</span><span class="p">,</span><span class="s1">'지정문자열B'</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">CHARINDEX</span><span class="p">(</span><span class="s1">'찾을문자열A'</span><span class="p">,</span><span class="s1">'지정문자열B'</span><span class="p">,</span><span class="err">숫자</span><span class="k">C</span><span class="p">)</span> <span class="c1">-- 이건 C 위치에서부터 B에서 A를 찾으라는 뜻</span>
+</pre></table></code></div></div><h3 id="dml-trigger">DML Trigger</h3><p>설명</p><ul><li>Data Manipulation Language (DML) Triggers are special kind of Stored Procedure or an operation that gets executed automatically when a DML operation like INSERT, UPDATE OR DELETE is fired on a Table or View</ul><p>예시</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="c1">--Create Demo Database</span>
+<span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">SqlHintsDMLTriggerDemo</span>
+<span class="k">GO</span>
+<span class="n">USE</span> <span class="n">SqlHintsDMLTriggerDemo</span>
+<span class="k">GO</span>
+
+<span class="c1">--Create Customer Table</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Customer</span> 
+<span class="p">(</span> <span class="n">CustomerId</span> <span class="nb">INT</span> <span class="k">IDENTITY</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+  <span class="n">FirstName</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">LastName</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+<span class="k">GO</span>
+
+<span class="c1">--Create Customer Trigger</span>
+<span class="k">CREATE</span> <span class="k">TRIGGER</span> <span class="n">ExampleTrigger</span>
+<span class="k">ON</span> <span class="n">Customer</span>
+<span class="k">FOR</span> <span class="k">INSERT</span>
+<span class="k">AS</span>
+<span class="k">BEGIN</span>
+     <span class="n">PRINT</span> <span class="s1">'AFTER Trigger ExampleTrigger executed!'</span>
+<span class="k">END</span>
+</pre></table></code></div></div><p>Trigger의 종류</p><ol><li>AFTER Triggers<ul><li>AFTER Triggers are executed after the DML statement completes but before it is committed to the database<li>AFTER Triggers if required can rollback it’s actions and source DML statement which invoked it<li>On a Table with a AFTER trigger, the trigger will be executed once the triggering DML action completes and before it is committed<li>A table can multiple AFTER triggers and for the same trigger action too we can have multiple triggers<li>예시<div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c1">--Create an AFTER Trigger AfterTriggerExample1 for the DML INSERT, UPDATE and DELETE OPERATION on the Customer table by executing the following script</span>
+<span class="k">CREATE</span> <span class="k">TRIGGER</span> <span class="n">AfterTriggerExample1</span>
+<span class="k">ON</span> <span class="n">Customer</span>
+<span class="k">FOR</span> <span class="k">INSERT</span><span class="p">,</span> <span class="k">UPDATE</span><span class="p">,</span> <span class="k">DELETE</span>
+<span class="k">AS</span>
+<span class="k">BEGIN</span>
+<span class="n">PRINT</span> <span class="s1">'AFTER Trigger AfterTriggerExample1 executed!'</span>
+<span class="k">END</span>
+</pre></table></code></div></div></ul><li>INSTEAD OF Triggers<ul><li>INSTEAD OF Triggers are the triggers which gets executed automatically in place of triggering DML (i.e. INSERT, UPDATE and DELETE) action<li>If we are inserting a record and we have a INSTEAD OF trigger for INSERT then instead of INSERT whatever action is defined in the trigger that gets executed<li><strong>A table can have one INSTEAD of Trigger for each Triggering DML actions INSERT, UPDATE and DELETE</strong><li>예시<div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c1">--Create an INSTEAD OF Trigger on the Customer Table for the INSERT DML operation by executing the following script</span>
+<span class="k">CREATE</span> <span class="k">TRIGGER</span> <span class="n">INSTEADOFTriggerExample</span> 
+<span class="k">ON</span> <span class="n">Customer</span>
+<span class="k">INSTEAD</span> <span class="k">OF</span> <span class="k">INSERT</span>
+<span class="k">AS</span>
+<span class="k">BEGIN</span>
+ <span class="n">PRINT</span><span class="p">(</span><span class="s1">'Instead of trigger is Executed!'</span><span class="p">)</span>
+<span class="k">END</span>
+</pre></table></code></div></div></ul></ol><h3 id="mssql-stored-procedure의-각종-함수-예시">MSSQL Stored procedure의 각종 함수 예시</h3><p>선언과 초기화</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c1">-- 선언</span>
+<span class="k">DECLARE</span> <span class="o">@</span><span class="n">HTL</span> <span class="nb">DATETIME</span>
+
+<span class="c1">-- 초기화</span>
+<span class="k">SET</span> <span class="o">@</span><span class="n">HTL</span><span class="o">=</span><span class="n">GETDATE</span><span class="p">()</span>
+</pre></table></code></div></div><p>조건문 관련</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+</pre><td class="rouge-code"><pre><span class="c1">-- 조건문</span>
+<span class="n">IF</span> <span class="err">조건</span>
+    <span class="err">실행문</span>
+<span class="k">ELSE</span>
+    <span class="err">실행문</span>
+
+<span class="c1">-- 실행문이 2개 이상인 조건문</span>
+<span class="n">IF</span> <span class="err">조건</span>
+    <span class="k">BEGIN</span>
+        <span class="err">실행문</span> <span class="mi">1</span>
+        <span class="err">실행문</span> <span class="mi">2</span>
+        <span class="p">...</span>
+    <span class="k">END</span>
+
+<span class="c1">-- 조건문의 조건</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="p">[</span><span class="err">테이블명</span><span class="p">]</span> <span class="k">WHERE</span> <span class="p">[</span><span class="err">칼럼명</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="err">조건</span><span class="p">]</span> <span class="k">OR</span> <span class="err">칼럼명</span> <span class="o">=</span> <span class="p">[</span><span class="err">조건</span><span class="mi">1</span><span class="p">]</span> <span class="k">OR</span> <span class="err">칼럼명</span> <span class="o">=</span> <span class="p">[</span><span class="err">조건</span><span class="mi">2</span><span class="p">]</span> <span class="k">OR</span> <span class="err">칼럼명</span> <span class="o">=</span> <span class="p">[</span><span class="err">조건</span><span class="mi">3</span><span class="p">]</span> <span class="c1">--OR</span>
+<span class="c1">-- IN을 통해 여러 OR 조건이 있는 sql 문장을 OR와 동일하게 사용 가능하다</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="p">[</span><span class="err">테이블명</span><span class="p">]</span> <span class="k">WHERE</span> <span class="p">[</span><span class="err">칼럼명</span><span class="p">]</span> <span class="k">IN</span> <span class="o">=</span><span class="p">(</span> <span class="p">[</span><span class="err">조건</span><span class="mi">1</span><span class="p">],[</span><span class="err">조건</span><span class="mi">2</span><span class="p">],[</span><span class="err">조건</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span> <span class="c1">--IN</span>
+
+<span class="c1">-- case문(JOIN한 것과 같은 결과)</span>
+<span class="k">SELECT</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="k">C</span><span class="p">,</span> <span class="p">(</span>
+    <span class="k">CASE</span>
+        <span class="k">WHEN</span> <span class="n">B</span><span class="o">=</span><span class="mi">10</span>
+            <span class="k">THEN</span> <span class="s1">'b'</span>
+        <span class="k">WHEN</span> <span class="n">B</span><span class="o">=</span><span class="mi">20</span>
+            <span class="k">THEN</span> <span class="s1">'c'</span>
+        <span class="k">ELSE</span>
+            <span class="s1">'d'</span>
+    <span class="k">END</span><span class="p">)</span> <span class="k">AS</span> <span class="n">K</span>
+    <span class="k">FROM</span> <span class="n">ALPHA</span>
+
+<span class="c1">-- 중첩 case문 예시</span>
+<span class="k">SELECT</span>  <span class="n">T1</span><span class="p">.</span><span class="n">STORE_ID</span>
+        <span class="p">,</span><span class="n">T1</span><span class="p">.</span><span class="n">STORE_ADDR</span>
+        <span class="p">,</span><span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">T1</span><span class="p">.</span><span class="n">STORE_SIZE</span> <span class="o">&gt;=</span> <span class="mi">100</span> <span class="k">THEN</span>
+                <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_GD</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'S'</span><span class="p">)</span> <span class="k">THEN</span> <span class="s1">'High grade'</span>
+                     <span class="k">WHEN</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_GD</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'B'</span><span class="p">)</span> <span class="k">THEN</span> <span class="s1">'Mid Grade'</span>
+                     <span class="k">ELSE</span> <span class="s1">'Low Grade'</span>
+                <span class="k">END</span>
+              <span class="k">WHEN</span> <span class="n">T1</span><span class="p">.</span><span class="n">STORE_SIZE</span> <span class="o">&gt;=</span> <span class="mi">50</span> <span class="k">THEN</span>
+                <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_GD</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'S'</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">)</span> <span class="k">THEN</span> <span class="s1">'High Grade'</span>
+                     <span class="k">WHEN</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_GD</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'B'</span><span class="p">)</span> <span class="k">THEN</span> <span class="s1">'Mid Grade'</span>
+                     <span class="k">ELSE</span> <span class="s1">'Low Grade'</span>
+                <span class="k">END</span>
+             <span class="k">ELSE</span>
+                <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_GD</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'S'</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">,</span> <span class="s1">'B'</span><span class="p">)</span> <span class="k">THEN</span> <span class="s1">'High Grade'</span>
+                     <span class="k">ELSE</span> <span class="s1">'Low Grade'</span>
+                <span class="k">END</span>
+        <span class="k">END</span> <span class="n">STORE_SIZE_GD</span>
+<span class="k">FROM</span>    <span class="n">SQL_TEST</span><span class="p">.</span><span class="n">MA_STORE</span> <span class="n">T1</span>
+        <span class="p">,</span><span class="n">SQL_TEST</span><span class="p">.</span><span class="n">CD_REGION</span> <span class="n">T2</span>
+<span class="k">WHERE</span>   <span class="n">T1</span><span class="p">.</span><span class="n">REGION_CD</span> <span class="o">=</span> <span class="n">T2</span><span class="p">.</span><span class="n">REGION_CD</span>
+
+<span class="c1">-- DECODE</span>
+<span class="c1">-- 조건에 따라 데이터를 다른 값이나 컬럼값으로 추출 할 수 있다</span>
+<span class="c1">-- DECODE(VALUE, IF1, THEN1, IF2, THEN2...) 형태로 사용 할 수 있다</span>
+<span class="c1">-- VALUE 값이 IF1일 경우에 THEN1 값을 반환하고, VALUE 값이 IF2일 경우에는 THEN2 값을 반환한다</span>
+<span class="c1">-- DECODE 함수 안에 DECODE함수를 중첩으로 사용 할 수 있다</span>
+<span class="k">SELECT</span> <span class="n">deptno</span><span class="p">,</span> <span class="n">DECODE</span><span class="p">(</span><span class="n">deptno</span><span class="p">,</span> <span class="mi">10</span> <span class="p">,</span> <span class="s1">'ACCOUNTING'</span> <span class="p">,</span>
+                              <span class="mi">20</span> <span class="p">,</span> <span class="s1">'RESEARCH'</span> <span class="p">,</span>
+                              <span class="mi">30</span> <span class="p">,</span> <span class="s1">'SALES'</span><span class="p">,</span> <span class="s1">'OPERATIONS'</span><span class="p">)</span> <span class="n">name</span>
+<span class="k">FROM</span> <span class="n">dept</span><span class="p">;</span>
+
+<span class="c1">-- 결과</span>
+<span class="n">DEPTNO</span>   <span class="n">NAME</span>
+<span class="c1">------    ----------</span>
+    <span class="mi">10</span>    <span class="n">ACCOUNTING</span>
+    <span class="mi">20</span>    <span class="n">RESEARCH</span>
+    <span class="mi">30</span>    <span class="n">SALES</span>
+    <span class="mi">40</span>    <span class="n">OPERATIONS</span>
+</pre></table></code></div></div><p>반복문</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c1">-- 반복문</span>
+<span class="n">WHILE</span> <span class="o">@</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mi">100</span>
+    <span class="k">BEGIN</span>
+        <span class="err">실행문</span>
+    <span class="k">END</span>
+</pre></table></code></div></div><p>문자열 치환</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="c1">-- 문자열 치환</span>
+<span class="c1">-- REPLACE</span>
+<span class="c1">-- REPLACE(대상, 바꿀 문자, 바뀔 문자);</span>
+<span class="k">SELECT</span> <span class="k">REPLACE</span><span class="p">(</span><span class="s1">'abc123abc'</span><span class="p">,</span> <span class="s1">'abc'</span><span class="p">,</span> <span class="s1">'321'</span><span class="p">);</span>
+<span class="c1">--&gt; 321123321</span>
+
+<span class="c1">-- STUFF</span>
+<span class="c1">-- STUFF(대상, 치환 시작 위치, 치환 문자 수, 바뀔 문자);</span>
+<span class="k">SELECT</span> <span class="n">STUFF</span><span class="p">(</span><span class="s1">'abcdef'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'XXX'</span><span class="p">);</span>
+<span class="c1">--&gt; aXXXef</span>
+</pre></table></code></div></div><p>JSON 객체 불러온 후, 해당 value의 값에 따라 다른 값 출력하기(UPDATE의 SET 안에서 쓸 때 유용함)</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="p">((</span><span class="k">SELECT</span> <span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="mi">1</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">OPENJSON</span><span class="p">(</span><span class="n">JSON_QUERY</span><span class="p">(</span><span class="n">dpd</span><span class="p">.</span><span class="n">dpc_led</span><span class="p">,</span> <span class="s1">'$.ledctrl_error'</span><span class="p">))</span>
+    <span class="k">WITH</span> <span class="p">(</span><span class="n">signal1</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="k">MAX</span><span class="p">)</span> <span class="s1">'$.info.signal1'</span><span class="p">,</span> <span class="n">signal2</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="k">MAX</span><span class="p">)</span> <span class="s1">'$.info.signal2'</span><span class="p">)</span> 
+    <span class="k">WHERE</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">signal1</span> <span class="o">=</span> <span class="s1">'ERROR'</span> <span class="k">OR</span> <span class="n">signal2</span> <span class="o">=</span> <span class="s1">'ERROR'</span><span class="p">)</span>
+        <span class="p">))</span> <span class="k">AS</span> <span class="n">SIG_WARN</span><span class="p">)</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span><span class="p">)</span>
+        <span class="o">+</span>
+        <span class="p">(</span><span class="k">SELECT</span> <span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="mi">1</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">OPENJSON</span><span class="p">(</span><span class="n">JSON_QUERY</span><span class="p">(</span><span class="n">dpd</span><span class="p">.</span><span class="n">dpc_led</span><span class="p">,</span> <span class="s1">'$.ledctrl_error'</span><span class="p">))</span>
+    <span class="k">WITH</span> <span class="p">(</span><span class="n">signal1</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="k">MAX</span><span class="p">)</span> <span class="s1">'$.info.signal1'</span><span class="p">,</span> <span class="n">signal2</span> <span class="n">NVARCHAR</span><span class="p">(</span><span class="k">MAX</span><span class="p">)</span> <span class="s1">'$.info.signal2'</span><span class="p">)</span> 
+    <span class="k">WHERE</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">signal1</span> <span class="o">=</span> <span class="s1">'ERROR'</span> <span class="k">AND</span> <span class="n">signal2</span> <span class="o">=</span> <span class="s1">'ERROR'</span><span class="p">)</span> 
+        <span class="k">OR</span> <span class="p">(</span><span class="n">signal1</span> <span class="o">=</span> <span class="s1">'NONE'</span> <span class="k">AND</span> <span class="n">signal2</span> <span class="o">=</span> <span class="s1">'ERROR'</span><span class="p">)</span> 
+        <span class="k">OR</span> <span class="p">(</span><span class="n">signal1</span> <span class="o">=</span> <span class="s1">'ERROR'</span> <span class="k">AND</span> <span class="n">signal2</span> <span class="o">=</span> <span class="s1">'NONE'</span><span class="p">)</span>
+        <span class="p">))</span> <span class="k">as</span> <span class="n">SIG_ERR</span><span class="p">)</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> <span class="k">END</span><span class="p">))</span>
+</pre></table></code></div></div><p>ISNULL 함수</p><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="c1">-- ISNULL(칼럼,칼럼이 NULL일경우 대체할 값)</span>
+<span class="k">ISNULL</span><span class="p">(</span><span class="k">Column</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="k">ISNULL</span><span class="p">(</span><span class="o">@</span><span class="k">PARAMETER</span><span class="p">,</span><span class="s1">''</span><span class="p">)</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="트랜잭션-레벨-확인">트랜잭션 레벨 확인</h3><div class="language-sql highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="k">SELECT</span> <span class="k">CASE</span> <span class="n">transaction_isolation_level</span> 
+<span class="k">WHEN</span> <span class="mi">0</span> <span class="k">THEN</span> <span class="s1">'Unspecified'</span> 
+<span class="k">WHEN</span> <span class="mi">1</span> <span class="k">THEN</span> <span class="s1">'ReadUncommitted'</span> 
+<span class="k">WHEN</span> <span class="mi">2</span> <span class="k">THEN</span> <span class="s1">'ReadCommitted'</span> 
+<span class="k">WHEN</span> <span class="mi">3</span> <span class="k">THEN</span> <span class="s1">'Repeatable'</span> 
+<span class="k">WHEN</span> <span class="mi">4</span> <span class="k">THEN</span> <span class="s1">'Serializable'</span> 
+<span class="k">WHEN</span> <span class="mi">5</span> <span class="k">THEN</span> <span class="s1">'Snapshot'</span> <span class="k">END</span> <span class="k">AS</span> <span class="n">TRANSACTION_ISOLATION_LEVEL</span> 
+<span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">dm_exec_sessions</span> 
+<span class="k">where</span> <span class="n">session_id</span> <span class="o">=</span> <span class="o">@@</span><span class="n">SPID</span>
+</pre></table></code></div></div><h3 id="참조-링크">참조 링크</h3><p><a href="https://kmj1107.tistory.com/entry/MSSQL-CharIndex-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%9D%98-%EC%8B%9C%EC%9E%91-%EC%9C%84%EC%B9%98-%EC%B0%BE%EA%B8%B0">문자열의 시작 위치 찾기</a></p><p><a href="https://hklovecw.tistory.com/7">Procedure 간단한 명령어들</a></p><p><a href="https://devbox.tistory.com/entry/DBMS-CASEWHENTHEN">CASE…WHEN…THEN, DECODE</a></p><p><a href="https://sqlhints.com/tag/cannot-create-trigger-because-an-instead-of-insert-trigger-already-exists-on-this-object/">DML Triggers</a></p><p><a href="https://coding-factory.tistory.com/98">NULL값 함수 체크</a></p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/database/'>Database</a>, <a href='/categories/rdbms/'>RDBMS</a>, <a href='/categories/sql-server/'>SQL Server</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/rdbms/" class="post-tag no-text-decoration" >RDBMS</a> <a href="/tags/database/" class="post-tag no-text-decoration" >Database</a> <a href="/tags/mssql/" class="post-tag no-text-decoration" >MSSQL</a> <a href="/tags/sql-server/" class="post-tag no-text-decoration" >SQL Server</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=SQL Server - Taelim's blog&url=https://ghkdxofla.github.io/posts/mssql/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=SQL Server - Taelim's blog&u=https://ghkdxofla.github.io/posts/mssql/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=SQL Server - Taelim's blog&url=https://ghkdxofla.github.io/posts/mssql/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/nginx(0)/">Nginx, 정확히 무엇인가? (0)</a><li><a href="/posts/mongodb(1)/">MongoDB 설치 및 사용법</a><li><a href="/posts/jupyter_notebook/">Jupyter notebook 설치 및 사용법</a><li><a href="/posts/sqlalchemy-raw-query/">SQLAlchemy에서 실제 생성된 Query가 보고 싶을 경우</a><li><a href="/posts/multi-container-design-pattern/">Multi container design pattern</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/%EA%B0%9C%EB%B0%9C/">개발</a> <a class="post-tag" href="/tags/python/">Python</a> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">환경 구축</a> <a class="post-tag" href="/tags/network/">Network</a> <a class="post-tag" href="/tags/data-analysis/">Data Analysis</a> <a class="post-tag" href="/tags/data-science/">Data Science</a> <a class="post-tag" href="/tags/programming-language/">Programming Language</a> <a class="post-tag" href="/tags/server/">Server</a> <a class="post-tag" href="/tags/rdbms/">RDBMS</a></div></div></div><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/postgresql/"><div class="card-body"> <span class="timeago small" > Mar 15, 2020 <i class="unloaded">2020-03-15T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>PostgreSQL 설치 및 사용법</h3><div class="text-muted small"><p> 설치(Ubuntu) ### postgresql 설치 sudo apt-get update sudo apt-get install postgresql postgresql-contrib ### postgresql 계정 변경 sudo -i -u postgres ### postgresql 접속 psql ### sudo 계정으로 접속 sudo -u postg...</p></div></div></a></div><div class="card"> <a href="/posts/rdbms/"><div class="card-body"> <span class="timeago small" > Apr 17, 2020 <i class="unloaded">2020-04-17T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>RDBMS, 그리고 SQL</h3><div class="text-muted small"><p> SELECT COUNT(*)를 빠르게 하는 방법 Index Query Comment 1 SELECT COUNT(*) FROM Transactions Performs a full table scan. Slow on large tables. ...</p></div></div></a></div><div class="card"> <a href="/posts/transaction/"><div class="card-body"> <span class="timeago small" > Jun 2, 2020 <i class="unloaded">2020-06-02T00:00:00+09:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>트랜잭션이란</h3><div class="text-muted small"><p> 트랜잭션? 업무 처리를 위한 논리적인 작업 단위(논리적 단위가 단일 연산이 아닐 수 있음) 이는 곧 “A 업무 후 B 업무를 수행” 자체가 트랜잭션 단위가 될 수 있음을 의미한다 트랜잭션의 특징으로는 보통 “ACID”라 불리우는 4가지 특성이 있다 원자성(Atomicity) 트랜잭션은 더 이상 분해가 불가능한 업무의 최소단위이므...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/rdbms/" class="btn btn-outline-primary"><p>RDBMS, 그리고 SQL</p></a> <a href="/posts/development/" class="btn btn-outline-primary"><p>개발이란</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://twitter.com/ghkdxofla">Taelim Hwang</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/%EA%B0%9C%EB%B0%9C/">개발</a> <a class="post-tag" href="/tags/python/">Python</a> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">환경 구축</a> <a class="post-tag" href="/tags/network/">Network</a> <a class="post-tag" href="/tags/data-analysis/">Data Analysis</a> <a class="post-tag" href="/tags/data-science/">Data Science</a> <a class="post-tag" href="/tags/programming-language/">Programming Language</a> <a class="post-tag" href="/tags/server/">Server</a> <a class="post-tag" href="/tags/rdbms/">RDBMS</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://ghkdxofla.github.io{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>
